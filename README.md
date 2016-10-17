@@ -1,0 +1,2 @@
+# GGS
+Greedy Gaussian Segmentation
