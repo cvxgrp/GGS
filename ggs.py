@@ -65,7 +65,7 @@ def RunGGS(data, K, lamb, features = [], verbose = False):
     return breaks, plotPoints
 
 #Run cross-validation up to Kmax for a set of lambdas
-#Return: train and test set likelihood for every 
+#Return: train and test set likelihood for every K, lambda
 def FindHyperparams(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose = False):
     if (features == []):
         features = range(data.shape[1])
