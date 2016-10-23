@@ -3,7 +3,7 @@ Greedy Gaussian Segmentation (GGS) is a Python solver for efficiently segmenting
 
 ----
 
-The GGS Solver takes a T-by-n data matrix and breaks the T timestamps on an n-dimensional vector into segments over which the data is well explained as indepedent samples from a multivariate Gaussian distribution. It does so by formulating a covariance-regularized maximum likelihood problem and solving it using a greedy heuristic, with full details described in the [paper](http://stanford.edu/~boyd/papers/ggs.html).
+The GGS Solver takes a T-by-n data matrix and breaks the T timestamps on an n-dimensional vector into segments over which the data is well explained as independent samples from a multivariate Gaussian distribution. It does so by formulating a covariance-regularized maximum likelihood problem and solving it using a greedy heuristic, with full details described in the [paper](http://stanford.edu/~boyd/papers/ggs.html).
 
 
 Download & Setup
@@ -33,7 +33,7 @@ The GGS package has three main functions:
 RunGGS(data, K, lamb, features = [], verbose = False)
 ```
 
-Finds K breakpoints in the data for a given regularization parameter lambda
+Finds K breakpoints in the data for a given regularization parameter lambda.
 
 ----
 
@@ -49,7 +49,7 @@ Runs 10-fold cross validation, and returns the train and test set likelihood for
 ```
 FindMeanCovs(data, breakpoints, lamb, features = [], verbose = False)
 ```
-Finds the means and regularized covariances of each segment, given a set of breakpoints
+Finds the means and regularized covariances of each segment, given a set of breakpoints.
 
 ----
 
