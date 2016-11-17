@@ -33,6 +33,8 @@ The GGS package has three main functions:
 bps, objectives = GGS(data, Kmax, lamb)
 ```
 
+Finds K breakpoints in the data for a given regularization parameter lambda
+
 **Inputs**
 
 data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
@@ -54,6 +56,8 @@ objectives - List of the objective values at each intermediate step (for *K =* 0
 meancovs = GGSMeanCov(data, breakpoints, lamb)
 ```
 
+Finds the means and regularized covariances of each segment, given a set of breakpoints.
+
 **Inputs**
 
 data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
@@ -72,6 +76,8 @@ meancovs - a list of (mean, covariance) tuples for each segment in the data
 ```
 cvResults = GGSCrossVal(data, Kmax=25, lambList = [0.1, 1, 10])
 ```
+
+Runs 10-fold cross validation, and returns the train and test set likelihood for every (K, lambda) pair up to Kmax
 
 **Inputs**
 
