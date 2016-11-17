@@ -1,31 +1,57 @@
 from ggs import *
 import numpy as np
 import matplotlib.pyplot as plt
-
-# Read in daily log returns from 1997-2015 of 10 indices: 
-# DM stocks, EM stocks, Real estate, Oil, Gold, HY bonds, EM HY bonds, GVT bonds, CORP bonds, IFL bonds
-filename = "Data/Returns.txt"
-data = np.genfromtxt(filename,delimiter=' ')
-# Select DM stocks, Oil, and GVT bonds
-feats = [0,3,7]
+import math
 
 
+np.random.seed(0)
+# Generate synthetic 1D data
+# First 1000 samples: mean = 1, SD = 1
+# Second 1000 samples: mean = 0, SD = 0.1
+# Third 1000 samples: mean = 0, SD = 1
+d1 = np.random.normal(1,1,1000)
+d2 = np.random.normal(0,0.5,1000)
+d3 = np.random.normal(-1,1,1000)
+
+data = np.concatenate((d1,d2,d3))
+data = np.reshape(data, (3000,1))
 
 
-# Find 10 breakpoints at lambda = 1e-4
-bps, objectives = GGS(data, Kmax = 10, lamb = 1e-4, features = feats)
+# Find up to 10 breakpoints at lambda = 1e-1
+bps, objectives = GGS(data, Kmax = 10, lamb = 1e-1)
 
-# Find means and covariances of the segments, given the selected breakpoints
-bp10 = bps[10] # Get breakpoints for K = 10
-meancovs = GGSMeanCov(data, breakpoints = bp10, lamb = 1e-4, features = feats)
+print bps
+print objectives
 
-
-print "Breakpoints are at", bps
-
-# Plot objective vs. number of breakpoints
-plotVals = map(list, zip(*objectives))
-plotVals[0] = [len(i)-2 for i in plotVals[0]]
-plt.plot(plotVals[0], plotVals[1], 'or-')
+# Plot objective vs. number of breakpoints. Note that the objective essentially
+# stops increasing after K = 2, since there are only 2 "true" breakpoints
+plotVals = range(len(objectives))
+plt.plot(plotVals, objectives, 'or-')
 plt.xlabel('Number of Breakpoints')
 plt.ylabel(r'$\phi(b)$')
+plt.show()
+
+
+#Plot predicted Mean/Covs
+breaks = bps[2]
+
+mcs = GGSMeanCov(data, breaks, 1e-1)
+predicted = []
+varPlus = []
+varMinus = []
+for i in range(len(mcs)):
+	for j in range(breaks[i+1]-breaks[i]):
+		predicted.append(mcs[i][0]) # Estimate the mean
+		varPlus.append(mcs[i][0] + math.sqrt(mcs[i][1][0])) # One standard deviation above the mean
+		varMinus.append(mcs[i][0] - math.sqrt(mcs[i][1][0])) # One s.d. below
+
+f, axarr = plt.subplots(2, sharex=True)
+axarr[0].plot(data)
+axarr[0].set_ylim([-4,4])
+axarr[0].set_ylabel('Actual Data')
+axarr[1].plot(predicted)
+axarr[1].plot(varPlus, 'r--')
+axarr[1].plot(varMinus, 'r--')
+axarr[1].set_ylim([-4,4])
+axarr[1].set_ylabel('Predicted mean (+/- 1 S.D.)')
 plt.show()

@@ -103,7 +103,7 @@ verbose = False - Print intermediate steps when running the algorithm
 Example Usage
 ======================
 
-Running `helloworld.py` will yield the following plot, showing the objective (Equation 4 in the paper) vs. the number of breakpoints:
+Running `financeExample.py` will yield the following plot, showing the objective (Equation 4 in the paper) vs. the number of breakpoints:
 
 ![Objective vs. # of breakpoints](Images/helloworld.png)
 
@@ -123,7 +123,7 @@ feats = [0,3,7]
 
 #Run cross-validaton up to Kmax = 30, at lambda = 1e-4
 maxBreaks = 30
-lls = FindHyperparams(data, Kmax=maxBreaks, lambList = [1e-4], features = feats, verbose = False)
+lls = GGSCrossVal(data, Kmax=maxBreaks, lambList = [1e-4], features = feats, verbose = False)
 
 trainLikelihood = lls[0][1][0]
 testLikelihood = lls[0][1][1]
