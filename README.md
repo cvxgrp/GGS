@@ -96,6 +96,7 @@ cvResults - list of (lamb, ([TrainLL],[TestLL])) tuples for each regularization 
 Additional optional parameters (for all three functions above): 
 
 features = [] - select a certain subset of columns in the data to operate on
+
 verbose = False - Print intermediate steps when running the algorithm
 
 
