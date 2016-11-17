@@ -18,7 +18,7 @@ from sys import platform as _platform
 #Find K breakpoints on the data at a specific lambda
 #Returns: The K breakpoints, along with all intermediate breakpoints (for k < K) and their corresponding
 #   covariance-regularized maximum likelihoods
-def RunGGS(data, K, lamb, features = [], verbose = False):
+def GGS(data, Kmax, lamb, features = [], verbose = False):
     #Select the desired features
     if (features == []):
         features = range(data.shape[1])
@@ -27,10 +27,11 @@ def RunGGS(data, K, lamb, features = [], verbose = False):
 
     #Initialize breakpoints
     breaks = [0,m+1]
-    plotPoints = [(breaks[:],calculateLikelihood(data, breaks,lamb))]
+    breakPoints = [breaks[:]]
+    plotPoints = [calculateLikelihood(data, breaks,lamb)]
 
     #Start GGS Algorithm
-    for z in range(K):
+    for z in range(Kmax):
         numBreaks = z+1
         newInd = -1
         newVal = +1
@@ -60,13 +61,14 @@ def RunGGS(data, K, lamb, features = [], verbose = False):
 
         #Calculate likelihood
         ll = calculateLikelihood(data,breaks,lamb)
-        plotPoints.append((breaks[:], ll))
+        breakPoints.append(breaks[:])
+        plotPoints.append(ll)
 
-    return breaks, plotPoints
+    return breakPoints, plotPoints
 
 #Run cross-validation up to Kmax for a set of lambdas
 #Return: train and test set likelihood for every K, lambda
-def FindHyperparams(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose = False):
+def GGSCrossVal(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose = False):
     if (features == []):
         features = range(data.shape[1])
     data = data[:,features]
@@ -133,7 +135,7 @@ def FindHyperparams(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbo
 
  
 #Find and return the means/regularized covariance of each segment for a given set of breakpoints
-def FindMeanCovs(data, breakpoints, lamb, features = [], verbose = False):
+def GGSMeanCov(data, breakpoints, lamb, features = [], verbose = False):
     #Select the desired features
     if (features == []):
         features = range(data.shape[1])
@@ -252,19 +254,19 @@ def adjustBreaks(data, breakpoints, newInd, lamb = 0, verbose = False, maxShuffl
 def multi_run_wrapper(args):
     return oneFold(*args)
 def oneFold(fold, data, breakpoints, lamb, verbose, origSize, n, ordering):
-    #Remove 10% of data for test set
+    # Remove 10% of data for test set
     mseList = []
     trainList = []
     testSet = np.sort(ordering[(fold)*origSize/10:(fold+1)*origSize/10])
     mask = np.ones(origSize, dtype=bool)
     mask[testSet] = False
     trainData = data[mask,:]
-    #Solve for test and train error
+    # Solve for test and train error
     testSize = len(testSet)
     trainSize = origSize - testSize
-    bp = RunGGS(trainData, breakpoints, lamb, [], verbose)[1]
+    bp = GGS(trainData, breakpoints, lamb, [], verbose)[0]
     for z in bp:
-        i = z[0] 
+        i = z
         (mse, currBreak) = (0, 1)
         temp = trainData[0:i[1]]
         empMean = np.mean(temp, axis=0)

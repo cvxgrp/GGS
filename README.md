@@ -30,28 +30,68 @@ Supported Functions
 The GGS package has three main functions:
 
 ```
-RunGGS(data, K, lamb, features = [], verbose = False)
+bps, objectives = GGS(data, Kmax, lamb)
 ```
 
-Finds K breakpoints in the data for a given regularization parameter lambda.
+**Inputs**
+
+data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+
+Kmax - the number of breakpoints to find
+
+lamb - regularization parameter for the regularized covariance
+
+**Returns**
+
+bps - List of lists, where element *i* of the larger list is the set of breakpoints found at *K = i* in the GGS algorithm
+
+objectives - List of the objective values at each intermediate step (for *K =* 0 to Kmax)
+
+
+----
+
+```
+meancovs = GGSMeanCov(data, breakpoints, lamb)
+```
+
+**Inputs**
+
+data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+
+breakpoints - a list of breakpoint locations
+
+lamb - regularization parameter for the regularized covariance
+
+**Returns**
+
+meancovs - a list of (mean, covariance) tuples for each segment in the data
 
 ----
 
 
 ```
-FindHyperparams(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose = False)
+cvResults = GGSCrossVal(data, Kmax=25, lambList = [0.1, 1, 10])
 ```
 
-Runs 10-fold cross validation, and returns the train and test set likelihood for every (K, lambda) pair up to Kmax.
+**Inputs**
+
+data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+
+Kmax - the maximum number of breakpoints to run GGS on
+
+lambList - a list of regularization parameters to test
+
+**Returns**
+
+cvResults - list of (lamb, ([TrainLL],[TestLL])) tuples for each regularization parameter in lambList. Here, TrainLL and TestLL are the average per-sample log-likelihood across the 10 folds of cross-validation for all *K*'s from 0 to Kmax
 
 ----
 
-```
-FindMeanCovs(data, breakpoints, lamb, features = [], verbose = False)
-```
-Finds the means and regularized covariances of each segment, given a set of breakpoints.
+Additional optional parameters (for all three functions above): 
 
-----
+features = [] - select a certain subset of columns in the data to operate on
+verbose = False - Print intermediate steps when running the algorithm
+
 
 Example Usage
 ======================
