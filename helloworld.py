@@ -16,6 +16,7 @@ d3 = np.random.normal(-1,1,1000)
 data = np.concatenate((d1,d2,d3))
 data = np.reshape(data, (3000,1))
 
+data = data.T #Convert to an n-by-T matrix
 
 # Find up to 10 breakpoints at lambda = 1e-1
 bps, objectives = GGS(data, Kmax = 10, lamb = 1e-1)

@@ -62,5 +62,5 @@ with open('ProcessedText.txt','r') as f:
 
 #Run GGS
 print "Running GGS"
-a = GGS(data, 7, 0.0001)
+a = GGS(data.T, 7, 0.0001)
 print a

@@ -3,7 +3,7 @@ Greedy Gaussian Segmentation (GGS) is a Python solver for efficiently segmenting
 
 ----
 
-The GGS Solver takes a T-by-n data matrix and breaks the T timestamps on an n-dimensional vector into segments over which the data is well explained as independent samples from a multivariate Gaussian distribution. It does so by formulating a covariance-regularized maximum likelihood problem and solving it using a greedy heuristic, with full details described in the [paper](http://stanford.edu/~boyd/papers/ggs.html).
+The GGS Solver takes an n-by-T data matrix and breaks the T timestamps on an n-dimensional vector into segments over which the data is well explained as independent samples from a multivariate Gaussian distribution. It does so by formulating a covariance-regularized maximum likelihood problem and solving it using a greedy heuristic, with full details described in the [paper](http://stanford.edu/~boyd/papers/ggs.html).
 
 
 Download & Setup
@@ -37,7 +37,7 @@ Finds K breakpoints in the data for a given regularization parameter lambda
 
 **Inputs**
 
-data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+data - a n-by-T data matrix, with T timestamps of an n-dimensional vector
 
 Kmax - the number of breakpoints to find
 
@@ -60,7 +60,7 @@ Finds the means and regularized covariances of each segment, given a set of brea
 
 **Inputs**
 
-data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+data - a n-by-T data matrix, with T timestamps of an n-dimensional vector
 
 breakpoints - a list of breakpoint locations
 
@@ -81,7 +81,7 @@ Runs 10-fold cross validation, and returns the train and test set likelihood for
 
 **Inputs**
 
-data - a T-by-n data matrix, with T timestamps of an n-dimensional vector
+data - a n-by-T data matrix, with T timestamps of an n-dimensional vector
 
 Kmax - the maximum number of breakpoints to run GGS on
 

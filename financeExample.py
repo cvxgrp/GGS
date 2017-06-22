@@ -9,7 +9,7 @@ data = np.genfromtxt(filename,delimiter=' ')
 # Select DM stocks, Oil, and GVT bonds
 feats = [0,3,7]
 
-
+data = data.T #Convert to an n-by-T matrix
 
 
 # Find 10 breakpoints at lambda = 1e-4

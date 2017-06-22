@@ -19,6 +19,7 @@ from sys import platform as _platform
 #Returns: The K breakpoints, along with all intermediate breakpoints (for k < K) and their corresponding
 #   covariance-regularized maximum likelihoods
 def GGS(data, Kmax, lamb, features = [], verbose = False):
+    data = data.T
     #Select the desired features
     if (features == []):
         features = range(data.shape[1])
@@ -69,6 +70,7 @@ def GGS(data, Kmax, lamb, features = [], verbose = False):
 #Run cross-validation up to Kmax for a set of lambdas
 #Return: train and test set likelihood for every K, lambda
 def GGSCrossVal(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose = False):
+    data = data.T
     if (features == []):
         features = range(data.shape[1])
     data = data[:,features]
@@ -136,6 +138,7 @@ def GGSCrossVal(data, Kmax=25, lambList = [0.1, 1, 10], features = [], verbose =
  
 #Find and return the means/regularized covariance of each segment for a given set of breakpoints
 def GGSMeanCov(data, breakpoints, lamb, features = [], verbose = False):
+    data = data.T
     #Select the desired features
     if (features == []):
         features = range(data.shape[1])
