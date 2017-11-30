@@ -267,7 +267,7 @@ def oneFold(fold, data, breakpoints, lamb, verbose, origSize, n, ordering):
     # Solve for test and train error
     testSize = len(testSet)
     trainSize = origSize - testSize
-    bp = GGS(trainData, breakpoints, lamb, [], verbose)[0]
+    bp = GGS(trainData.T, breakpoints, lamb, [], verbose)[0]
     for z in bp:
         i = z
         (mse, currBreak) = (0, 1)
