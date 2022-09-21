@@ -20,8 +20,8 @@ bp10 = bps[10] # Get breakpoints for K = 10
 meancovs = GGSMeanCov(data, breakpoints = bp10, lamb = 1e-4, features = feats)
 
 
-print "Breakpoints are at", bps
-print "Objectives are", objectives
+print ("Breakpoints are at", bps)
+print ("Objectives are", objectives)
 
 # Plot objective vs. number of breakpoints
 plotVals = range(len(objectives))
