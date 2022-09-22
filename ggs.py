@@ -46,8 +46,13 @@ def GGS(data, Kmax, lamb, features=[], verbose=False):
         # Check if our algorithm is finished
         if (newVal == 0):
             print("We are done adding breakpoints!")
-            print(breaks)
-            return breaks, plotPoints
+            breaks = adjustBreaks(data, breaks, [newInd], lamb, verbose)[:]  # new line
+            # Calculate likelihood  #new line
+            ll = calculateLikelihood(data, breaks, lamb)  # new line
+            breakPoints.append(breaks[:])  # new line
+            plotPoints.append(ll)  # new line
+            print(breakPoints)
+            return breakPoints, plotPoints
 
         # Add new breakpoint
         breaks.append(newInd)
